@@ -1,5 +1,7 @@
 package com.mca.zara.ecommerce.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +16,7 @@ public class PriceResponse {
 	private int identificadorProducto;
 	private int identificadorCadena;
 	private int tarifaAplicar;
-	private String fechaAplicacion;
+	private LocalDateTime fechaAplicacion;
 	private double PrecioFinalAplicar;
 
 }

@@ -1,6 +1,7 @@
 package com.mca.zara.ecommerce.models;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ public class Price {
     @Column(name = "BRAND_ID")
 	private Long brandId;
 	@Column(name = "START_DATE")
-	private String startDate;
+	private LocalDateTime startDate;
 	@Column(name = "END_DATE")
 	private Timestamp endDate;
 	@Column(name = "PRICE_LIST")

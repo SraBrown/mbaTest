@@ -2,13 +2,14 @@ package com.mca.zara.ecommerce;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import com.mca.zara.ecommerce.dto.PriceRequest;
 import com.mca.zara.ecommerce.dto.PriceResponse;
 import com.mca.zara.ecommerce.models.Price;
 import com.mca.zara.ecommerce.repository.PriceRepository;
@@ -22,32 +23,52 @@ class PriceServiceTests {
 	
 	PriceRepository repositoryMock=Mockito.mock(PriceRepository.class);
 	
-	@Mock
-	Optional<Price> modelsPrice;
-	@Mock
-	PriceService service;
+	@Autowired
+	PriceService service = new PriceService();
+	
+	PriceRequest requestFake=new PriceRequest();
+	PriceResponse data=new PriceResponse();
 	
 	@BeforeEach
 	void contextLoads() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime dateTime=LocalDateTime.parse("2020-06-14 15:00:00",formatter);
+		
 		priceMock.setBrandId(Long.valueOf(100));
 		priceMock.setProductId(100);
-		priceMock.setBrandId(Long.valueOf(1));
+		priceMock.setPrice(2000);
+		
+		requestFake.setFechaAplicacion("2020-06-14 15:00:00");
+		requestFake.setIdentificadorCadena(Long.valueOf(2));
+		requestFake.setIdentificadorProducto(35455);
+		
+		
+		Mockito.when(repositoryMock.findPriceByBrandIdAndProductIdAndStartDate(Long.valueOf(requestFake.getIdentificadorCadena()),
+				requestFake.getIdentificadorProducto(), dateTime)).thenReturn(priceMock);
+		
+		data.setIdentificadorCadena(priceMock.getBrandId().intValue());
+		data.setIdentificadorProducto(priceMock.getProductId());
+		data=service.searchPrice(requestFake);
+		
 	}
-	
+
+	@Test
+	void findPriceBackRequest() {
+		Assertions.assertNotNull(data);	
+		
+	}
+
+
 	@Test
 	void findPriceByBrandIdAndProductIdtest() {
-		
-		String dateTest="2020-06-14 15:00:00";
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		LocalDateTime dateTime=LocalDateTime.parse(dateTest,formatter);
-		
-		PriceResponse responseDto=new PriceResponse();
-				responseDto.setIdentificadorProducto(35455);
-		responseDto.setIdentificadorCadena(1);
-		responseDto.setFechaAplicacion(dateTime);
-		Mockito.when(repositoryMock.findPriceByBrandIdAndProductIdAndStartDate(Long.valueOf(responseDto.getIdentificadorCadena()),
-				responseDto.getIdentificadorProducto(), responseDto.getFechaAplicacion())).thenReturn(priceMock);
+		//data.setIdentificadorCadena(priceMock.getBrandId().intValue());
+		//data.setIdentificadorProducto(priceMock.getProductId());
+		//data=service.searchPrice(requestFake);
+		Assertions.assertEquals(2, data.getIdentificadorCadena());
 		
 	}
+	
+	
+	
 
 }

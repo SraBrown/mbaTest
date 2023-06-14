@@ -31,8 +31,6 @@ public class PriceService {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			LocalDateTime dateTime=LocalDateTime.parse(price.getFechaAplicacion(),formatter);
 			
-		
-			
 			log.info("PriceService "+ price.getIdentificadorProducto() + price.getIdentificadorCadena()+price.getFechaAplicacion());
 
 			modelsPrice = Optional.ofNullable(priceRepository.findPriceByBrandIdAndProductIdAndStartDate(price.getIdentificadorCadena(),price.getIdentificadorProducto(),
@@ -52,9 +50,6 @@ public class PriceService {
 
 		return response;
 		
-		
-		
-	
 		
 	}
 	

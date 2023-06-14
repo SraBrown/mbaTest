@@ -1,5 +1,7 @@
 package com.mca.zara.ecommerce;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,7 @@ import com.mca.zara.ecommerce.repository.PriceRepository;
 import com.mca.zara.ecommerce.service.PriceService;
 
 @SpringBootTest
-class EcommerceApplicationTests {
+class PriceServiceTests {
 	
 	
 	private static final Price priceMock = new Price();
@@ -33,11 +35,16 @@ class EcommerceApplicationTests {
 	}
 	
 	@Test
-	void test1() {
+	void findPriceByBrandIdAndProductIdtest() {
+		
+		String dateTest="2020-06-14 15:00:00";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime dateTime=LocalDateTime.parse(dateTest,formatter);
+		
 		PriceResponse responseDto=new PriceResponse();
 				responseDto.setIdentificadorProducto(35455);
 		responseDto.setIdentificadorCadena(1);
-		responseDto.setFechaAplicacion("2020-06-14 15:00:00");
+		responseDto.setFechaAplicacion(dateTime);
 		Mockito.when(repositoryMock.findPriceByBrandIdAndProductIdAndStartDate(Long.valueOf(responseDto.getIdentificadorCadena()),
 				responseDto.getIdentificadorProducto(), responseDto.getFechaAplicacion())).thenReturn(priceMock);
 		

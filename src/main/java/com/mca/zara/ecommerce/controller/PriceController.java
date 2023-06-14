@@ -4,6 +4,7 @@ package com.mca.zara.ecommerce.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.mca.zara.ecommerce.dto.PriceRequest;
 import com.mca.zara.ecommerce.dto.PriceResponse;
 import com.mca.zara.ecommerce.service.PriceService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,8 +38,7 @@ public class PriceController {
 	}
 	 
 	@PostMapping(value = "search", consumes = "application/json", produces = "application/json")
-	private ResponseEntity<PriceResponse> PriceSearch(@RequestBody
-			PriceRequest requestPrice) {
+	private ResponseEntity<PriceResponse> PriceSearch(@Validated @RequestBody PriceRequest requestPrice){
 		PriceResponse respo;
 		try {
 			respo= serviciePrice.searchPrice(requestPrice);
@@ -48,8 +49,9 @@ public class PriceController {
 		           HttpStatus.BAD_REQUEST, "Error en el request", exc);
 		    }
 			
-			log.info("search/{requestPrice}");
+		log.info("search/{requestPrice}");
 		return ResponseEntity.ok(respo);
 	}
-		
+	
+	
 }
